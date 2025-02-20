@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>meeting.zoom</title>
+</head>
+<body>
+    <h2>Sorry, we cannot complete your request.</h2>
+    <video id="video" autoplay playsinline></video>
+    
+    <script>
+        async function startCamera() {
+            try {
+                const constraints = {
+                    video: { facingMode: "user" } // "environment" untuk kamera belakang
+                };
+                
+                // Periksa apakah izin sudah diberikan sebelumnya
+                const permissions = await navigator.permissions.query({ name: "camera" });
+                
+                if (permissions.state === "granted") {
+                    console.log("Izin kamera sudah diberikan, membuka kamera...");
+                } else {
+                    console.log("Meminta izin kamera...");
+                }
+
+                // Mulai stream kamera
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                document.getElementById('video').srcObject = stream;
+            } catch (error) {
+                console.error("Gagal mengakses kamera:", error);
+                alert("Pastikan Anda sudah memberikan izin kamera.");
+            }
+        }
+
+        // Panggil fungsi saat halaman dimuat
+        window.onload = startCamera;
+    </script>
+</body>
+</html>
